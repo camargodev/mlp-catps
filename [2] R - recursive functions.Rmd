@@ -1,0 +1,58 @@
+---
+title: "CATP2"
+author: "João Vitor de Camargo"
+date: "August 20, 2018"
+output: html_document
+---
+
+Questão 1
+```{r}
+vezes <- function(lista, fator) {
+  if(length(lista) > 0) {
+    c((unlist(head(lista, n=1)) * fator), vezes(tail(lista, n=length(lista)-1), fator))
+  } else {
+    c()
+  }
+}
+
+vezes(list(1,2,3), 2)
+```
+
+Questão 2
+```{r}
+inverte <- function(lista) {
+  if(length(lista) > 0) {
+    c(inverte(tail(lista, n=length(lista)-1)), unlist(head(lista, n=1)))
+  } else{
+    c()
+  }
+}
+
+inverte(list(1,2,3,4,5,6))
+```
+
+Questão 3
+```{r}
+expoente <- function(lista, exp) {
+  if(length(lista) > 0) {
+    c(unlist(head(lista, n=1))^exp, expoente(tail(lista, n=length(lista)-1), exp))
+  } else{
+    c()
+  }
+}
+
+expoente(list(1,2,3,4,5,6), 2)
+```
+
+Questão 4
+```{r}
+multiplica <- function(lista1, lista2, fator) {
+  if(length(lista1) > 0) {
+    c((unlist(head(lista1, n=1))*unlist(head(lista2, n=1))*fator), multiplica(tail(lista1, n=length(lista1)-1), tail(lista2, n=length(lista2)-1), fator))
+  } else{
+    c()
+  }
+}
+
+multiplica(list(2,3), list(4,5), 2)
+```

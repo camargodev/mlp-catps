@@ -1,0 +1,119 @@
+---
+title: "Untitled"
+author: "João Vitor de Camargo"
+date: "August 28, 2018"
+output: html_document
+---
+
+```{r}
+df.1987 %>%
+  group_by(UniqueCarrier) %>%
+  summarize(N=n()) %>%
+  arrange(-N) %>%
+  slice(1:1) %>%
+  select(UniqueCarrier)
+```
+```{r}
+df.1987 %>%
+  arrange(-ArrDelay) %>%
+  slice(1:1) %>%
+  select(UniqueCarrier)
+```
+```{r}
+df.1987 %>%
+  group_by(DayOfWeek) %>%
+  summarize(N=n()) %>%
+  arrange(-N) %>%
+  slice(1:1) %>%
+  select(DayOfWeek)
+```
+```{r}
+df.1987 %>%
+  filter(Cancelled == 1) %>%
+  group_by(UniqueCarrier) %>%
+  summarize(N=n()) %>%
+  arrange(-N) %>%
+  slice(1:1) %>%
+  select(UniqueCarrier)
+```
+```{r}
+df.1987 %>%
+  group_by(UniqueCarrier) %>%
+  summarize(N=sum(Distance)) %>%
+  arrange(-N) %>%
+  slice(1:1) %>%
+  select(UniqueCarrier)
+```
+```{r}
+df.1987 %>%
+  filter(DepDelay > 0) %>%
+  mutate(Delay = DepDelay - ArrDelay) %>%
+  group_by(UniqueCarrier) %>%
+  summarize(N=sum(Delay)) %>%
+  arrange(-N) %>%
+  slice(1:1) %>%
+  select(UniqueCarrier) 
+```
+```{r}
+daysPerMonth = c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+calcDayOfYear <- function(month) {
+  if (month > 0) {
+    return(daysPerMonth[month] + calcDayOfYear(month-1))
+  } else{
+    return(0)
+  }
+}
+
+filtered.df <- df.1987 %>%
+  mutate(DayOfYear = calcDayOfYear(Month - 1) + DayofMonth) %>%
+  group_by(DayOfYear) %>%
+  summarize(N=n()) %>%
+  arrange(DayOfYear) 
+
+ggplot(data=filtered.df, aes(x=DayOfYear, y=N, group=1)) +
+  geom_line() +
+  geom_point() +
+  xlab("Dia do Ano") +
+  ylab("Número de Voos") +
+  theme_bw()
+```
+```{r}
+daysPerMonth = c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+calcDayOfYear <- function(month) {
+  if (month > 0) {
+    return(daysPerMonth[month] + calcDayOfYear(month-1))
+  } else{
+    return(0)
+  }
+}
+
+filtered.df <- df.1987 %>%
+  mutate(DayOfYear = calcDayOfYear(Month - 1) + DayofMonth) %>%
+  group_by(DayOfYear, UniqueCarrier) %>%
+  summarize(N=n()) %>%
+  arrange(DayOfYear) 
+
+ggplot(data=filtered.df, aes(x=DayOfYear, y=N, color=UniqueCarrier)) +
+  geom_line() +
+  geom_point() +
+  xlab("Dia do Ano") +
+  ylab("Número de Voos") +
+  theme_bw()
+```
+```{r}
+df.1987 %>%
+  filter(Cancelled == 1) %>%
+  group_by(Month) %>%
+  summarize(N=n()) %>%
+  arrange(-N) %>%
+  select(Month) %>%
+  slice(1:1)
+```
+```{r}
+df.1987 %>%
+  filter(Month == 12) %>%
+  group_by(Origin) %>%
+  summarize(N=sum(DepDelay/n(), na.rm = TRUE)) %>%
+  arrange(-N) %>%
+  slice(1:5)
+```

@@ -1,0 +1,105 @@
+---
+title: "Untitled"
+author: "João Vitor de Camargo"
+date: "August 22, 2018"
+output: html_document
+---
+
+```{r}
+f <- function(x) x*x
+g <- function(x) x*x*x
+h <- function(x) x*x*x*x
+l <- c(f, g, h)
+
+construir <- function(funcoes, fator) {
+    if(length(funcoes) > 0) {
+      c(head(funcoes, n=1)[[1]](fator), construir(tail(funcoes, n=length(funcoes)-1), fator))
+  } else {
+      c()
+  }
+}
+
+construir(l, 2)
+```
+
+```{r}
+f <- function(x, y) x*y
+g <- function(x, y) x*y*2
+h <- function(x, y) x*y*3
+l <- c(f, g, h)
+
+construirdois <- function(funcoes, fator_1, fator_2) {
+    if(length(funcoes) > 0) {
+      c(head(funcoes, n=1)[[1]](fator_1, fator_2), construirdois(tail(funcoes, n=length(funcoes)-1), fator_1, fator_2))
+  } else {
+      c()
+  }
+}
+
+construirdois(l, 2, 4)
+```
+
+```{r}
+duplica <- function(lista) {
+  sapply(lista, function(x) x*2)
+}
+
+duplica(c(1,2,3))
+```
+
+```{r}
+soma <- function(lista) {
+    if(length(lista) > 0) {
+      head(lista, n=1) + soma(tail(lista, n=length(lista)-1))
+  } else {
+      0
+  }
+}
+
+soma(c(1, 2, 3))
+```
+
+```{r}
+positivos <- function(lista) {
+  sapply(lista, function(x) x >= 0)
+}
+
+positivos(c(-1, 2, -4))
+```
+
+```{r}
+soma_quad <- function(lista) {
+    if(length(lista) > 0) {
+      head(lista, n=1)^2 + soma_quad(tail(lista, n=length(lista)-1))
+  } else {
+      0
+  }
+}
+
+norma <- function(lista) {
+  sqrt(soma_quad(lista))
+}
+
+norma(c(0.1, 0.2, 0.3, 0.4))
+```
+
+```{r}
+produtoInterno <- function(vetor_1, vetor_2) {
+    if(length(vetor_1) > 0) {
+      head(vetor_1, n=1)*head(vetor_2, n=1) + produtoInterno(tail(vetor_1, n=length(vetor_1)-1), tail(vetor_2, n=length(vetor_2)-1))
+  } else {
+      0
+  }
+}
+
+produtoInterno(c(0.1, 0.4, 0.9), c(0.2, 0.4, 0.5))
+```
+
+```{r}
+similaridade <- function(vetor_1, vetor_2) {
+  produtoInterno(vetor_1, vetor_2)/(norma(vetor_1)*norma(vetor_2))
+}
+
+similaridade(c(0.1, 0.4, 0.9), c(0.2, 0.4, 0.5))
+```
+
